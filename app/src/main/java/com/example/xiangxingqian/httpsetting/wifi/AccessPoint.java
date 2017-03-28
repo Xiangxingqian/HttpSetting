@@ -3,16 +3,17 @@ package com.example.xiangxingqian.httpsetting.wifi;
 import java.util.ArrayList;
 
 /**
+ * 接入点
  * Created by xiangxingqian on 2017/3/28.
  */
 public class AccessPoint {
-    private String ssid;
+    private String ssid;//wifi名
     private String bssid;
-    private String password;
-    private float signalStrength;  // 0~100
-    private String encryptionType;
-    private int networkId;
-    private ArrayList<AccessPoint> relativeAPs;
+    private String password; //wifi密码
+    private float signalStrength;  // 信号强度
+    private String encryptionType; //加密类型
+    private int networkId; //wifi id
+    private ArrayList<AccessPoint> relativeAPs;//其他接入点
 
     public String getSsid() {
         return ssid;

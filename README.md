@@ -1,1 +1,3 @@
-设置Android设备的代理
+#设置Android代理
+
+![image](https://github.com/Xiangxingqian/HttpSetting/proxysetting.gif)

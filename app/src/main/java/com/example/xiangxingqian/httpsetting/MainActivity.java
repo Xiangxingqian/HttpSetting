@@ -16,7 +16,14 @@ import com.example.xiangxingqian.httpsetting.wifi.WifiConfigurationHelper;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+/**
+ * 设置wifi代理
+ */
 public class MainActivity extends AppCompatActivity {
+
+    private static final String SSID = "Techwork";
+    private static final String PASSWORD = "20509288";
+    private static final String ENCRYPTIONTYPE = "wpa";
 
     private TextView tvConnect;
     private EditText etInputIp;
@@ -26,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-
     }
 
     private void initViews() {
@@ -42,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 String ip = etInputIp.getEditableText().toString();
 
-                connectWifi(ip);
+                connectWifi("192.168." + ip, 8888);
             }
         });
     }
@@ -53,24 +59,28 @@ public class MainActivity extends AppCompatActivity {
         } else {
             return true;
         }
-
     }
 
     /**
-     * 使用setProxy，而不是setHttpProxy
+     * 连接wifi
      */
-    private void connectWifi(String ip) {
-        AccessPoint accessPoint = new AccessPoint();
-        accessPoint.setSsid("Techwork");
-        accessPoint.setPassword("20509288");
-        accessPoint.setEncryptionType("wpa");
+    private void connectWifi(String ip, int port) {
 
+        //设置wifi名字和密码
+        AccessPoint accessPoint = new AccessPoint();
+        accessPoint.setSsid(SSID);
+        accessPoint.setPassword(PASSWORD);
+        accessPoint.setEncryptionType(ENCRYPTIONTYPE);
+
+        //设置本机的ip
         WifiConfiguration configuration = WifiConfigurationHelper.createConfiguration(accessPoint);
         WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
-        ProxyInfo proxyInfo = ProxyInfo.buildDirectProxy("192.168."+ip, 8888);
+        ProxyInfo proxyInfo = ProxyInfo.buildDirectProxy(ip, port);
+
+        //调用setProxy方法
         try {
             Class proxySettings = Class.forName("android.net.IpConfiguration$ProxySettings");
-            Method setProxy = WifiConfiguration.class.getMethod("setProxy",proxySettings, ProxyInfo.class);
+            Method setProxy = WifiConfiguration.class.getMethod("setProxy", proxySettings, ProxyInfo.class);
             setProxy.invoke(configuration, proxySettings.getEnumConstants()[1], proxyInfo);
             Toast.makeText(MainActivity.this, "Proxy is set successfully!", Toast.LENGTH_SHORT).show();
         } catch (NoSuchMethodException e) {
