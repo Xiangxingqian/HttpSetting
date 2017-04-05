@@ -8,6 +8,12 @@ import android.net.wifi.WifiConfiguration;
 
 public class WifiConfigurationHelper {
 
+    /**
+     * 设置WiFiConfiguration
+     *
+     * @param ap 接入点
+     * @return
+     */
     public static WifiConfiguration createConfiguration(AccessPoint ap) {
         String SSID = ap.getSsid();
         WifiConfiguration config = new WifiConfiguration();
